@@ -46,19 +46,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { localCache } from '@/utils/cache';
+import { ref, watch } from 'vue'
 import AccountPane from './account-pane.vue'
 import PhonePane from './phone-pane.vue';
 
 // 记住密码
-const isRemPassword = ref(false)
+const isRemPassword = ref(localCache.getCache('isRemPassword'))
+// 存储记住密码状态
+watch(isRemPassword, () => {
+  if(isRemPassword.value){
+    localCache.setCache('isRemPassword', true)
+  }else{
+    localCache.setCache('isRemPassword', false)
+  }
+})
+
+
 // 当前选择的tab
 const tabSelected = ref('account')
 
 const accountRef = ref<InstanceType<typeof AccountPane>>()
 
 const loginClick = () => {
-  accountRef.value?.loginAction()
+  accountRef.value?.loginAction(isRemPassword.value)
 }
 </script>
 <style lang="less" scoped>

@@ -24,10 +24,15 @@ import type { FormRules } from 'element-plus'
 import { reactive, ref, toRaw } from 'vue'
 import { useLoginStore } from '@/store/login/login'
 import type { IAccount } from '@/type/login'
+import { localCache } from '@/utils/cache'
+import {
+  LOGIN_NAME,
+  LOGIN_PASSWORD,
+} from '@/global/constants'
 
 const formValue = reactive<IAccount>({
-  name: '',
-  password: '',
+  name: localCache.getCache(LOGIN_NAME) ?? '',
+  password: localCache.getCache(LOGIN_PASSWORD) ?? '',
 })
 
 const rule: FormRules = {
@@ -61,9 +66,22 @@ const rule: FormRules = {
 
 const formRef = ref<InstanceType<typeof ElForm>>()
 const loginStore = useLoginStore()
-const loginAction = () => {
+
+// 点击登录
+const loginAction = (isRemPassword: boolean) => {
+  // 表单验证
   formRef.value?.validate((valid, fields) => {
     if (valid) {
+      // 记住密码
+      if (isRemPassword) {
+        localCache.setCache(LOGIN_NAME, formValue.name)
+        localCache.setCache(LOGIN_PASSWORD, formValue.password)
+      } else {
+        localCache.removeCache(LOGIN_NAME)
+        localCache.removeCache(LOGIN_PASSWORD)
+      }
+
+      // 发起登陆请求
       loginStore.login(toRaw(formValue))
     } else {
       ElMessage({

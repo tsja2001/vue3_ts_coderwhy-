@@ -7,3 +7,15 @@ export const loginRequest = (data: IAccount) => {
     data
   })
 }
+
+export const getUserInfo = (id: number) => {
+  return hyRequest.get({
+    url: '/users/' + id
+  })
+}
+
+export const getUserMenuById = (id: number) => {
+  return hyRequest.get({
+    url: `/role/${id}/menu`
+  })
+}
