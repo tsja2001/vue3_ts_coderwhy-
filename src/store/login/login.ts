@@ -7,7 +7,11 @@ import { defineStore } from 'pinia'
 import type { IAccount } from '@/type/login'
 import { localCache } from '@/utils/cache'
 import { router } from '@/router'
-import { LOGIN_TOKEN } from '@/global/constants'
+import {
+  LOGIN_MENU,
+  LOGIN_TOKEN,
+  LOGIN_USERINFO,
+} from '@/global/constants'
 
 interface IState {
   token: string
@@ -18,8 +22,8 @@ interface IState {
 export const useLoginStore = defineStore('login', {
   state: (): IState => ({
     token: localCache.getCache(LOGIN_TOKEN),
-    userInfo: {},
-    userMenu: [],
+    userInfo: localCache.getCache(LOGIN_USERINFO) ?? {},
+    userMenu: localCache.getCache(LOGIN_MENU) ?? [],
   }),
   actions: {
     async login(data: IAccount) {
@@ -31,12 +35,14 @@ export const useLoginStore = defineStore('login', {
       // 获取用户详细信息
       const userInfo = await getUserInfo(res.data.id)
       this.userInfo = userInfo.data
+      localCache.setCache(LOGIN_USERINFO, userInfo.data)
 
       // 获取用户菜单
       const userMenu = await getUserMenuById(
         this.userInfo.id
       )
       this.userMenu = userMenu.data
+      localCache.setCache(LOGIN_MENU, userMenu.data)
 
       router.push('/main')
     },
