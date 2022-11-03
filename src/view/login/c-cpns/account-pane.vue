@@ -22,8 +22,10 @@
 import { ElForm, ElMessage } from 'element-plus'
 import type { FormRules } from 'element-plus'
 import { reactive, ref, toRaw } from 'vue'
+import { useLoginStore } from '@/store/login/login'
+import type { IAccount } from '@/type/login'
 
-const formValue = reactive({
+const formValue = reactive<IAccount>({
   name: '',
   password: '',
 })
@@ -58,11 +60,12 @@ const rule: FormRules = {
 }
 
 const formRef = ref<InstanceType<typeof ElForm>>()
+const loginStore = useLoginStore()
 const loginAction = () => {
-  console.log(formRef.value)
   formRef.value?.validate((valid, fields) => {
-    if(valid){
-    }else{
+    if (valid) {
+      loginStore.login(toRaw(formValue))
+    } else {
       ElMessage({
         message: '请填写正确格式',
         type: 'warning',
