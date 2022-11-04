@@ -1,14 +1,20 @@
 <template>
   <div class="Main">
     <el-container class="container">
-      <el-aside class="aside" width="200px">
-        <main-menu></main-menu>
+      <el-aside
+        class="aside"
+        :width="isFold ? '60px' : '200px'"
+      >
+        <main-menu :isFold="isFold"/>
       </el-aside>
       <el-container>
         <el-header height="50px" class="header">
-          <main-header />
+          <main-header @foldEmit="foldHandler" />
         </el-header>
-        <el-main>Main</el-main>
+        <el-main>
+          aaa
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -17,6 +23,14 @@
 <script setup lang="ts">
 import MainMenu from '@/components/MainMenu/MainMenu.vue'
 import MainHeader from '@/components/MainHeader/MainHeader.vue'
+import { ref } from 'vue'
+
+const isFold = ref(false)
+
+//header折叠
+const foldHandler = (e: boolean) => {
+  isFold.value = e
+}
 </script>
 <style lang="less" scoped>
 .Main {
@@ -30,5 +44,15 @@ import MainHeader from '@/components/MainHeader/MainHeader.vue'
 }
 .aside {
   border-right: 1px solid #f0f0f0;
+  transition: width .2s;
+}
+.text{
+  color: #f00;
+  :deep(.inner1){
+    font-weight: 800;
+  }
+  .inner2{
+    font-weight: 800;
+  }
 }
 </style>

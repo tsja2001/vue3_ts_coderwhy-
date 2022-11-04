@@ -12,6 +12,8 @@ import {
   LOGIN_TOKEN,
   LOGIN_USERINFO,
 } from '@/global/constants'
+import type { RouteRecordRaw } from 'vue-router'
+import { mapMenuToRouters } from '@/utils/mapMenus'
 
 interface IState {
   token: string
@@ -21,9 +23,9 @@ interface IState {
 
 export const useLoginStore = defineStore('login', {
   state: (): IState => ({
-    token: localCache.getCache(LOGIN_TOKEN),
-    userInfo: localCache.getCache(LOGIN_USERINFO) ?? {},
-    userMenu: localCache.getCache(LOGIN_MENU) ?? [],
+    token: '',
+    userInfo: {},
+    userMenu: [],
   }),
   actions: {
     async login(data: IAccount) {
@@ -44,7 +46,30 @@ export const useLoginStore = defineStore('login', {
       this.userMenu = userMenu.data
       localCache.setCache(LOGIN_MENU, userMenu.data)
 
+      // 路由动态添加
+      // console.log('[ userMenu ] >', userMenu)
+      const routes = mapMenuToRouters(userMenu.data)
+      routes.forEach((item) =>
+        router.addRoute('main', item)
+      )
+
       router.push('/main')
+    },
+
+    loadLoaclCacheAction() {
+      const token = localCache.getCache(LOGIN_TOKEN)
+      const userInfo = localCache.getCache(LOGIN_USERINFO)
+      const userMenu = localCache.getCache(LOGIN_MENU)
+      if (token && userInfo && userMenu) {
+        this.token = token
+        this.userInfo = userInfo
+        this.userMenu = userMenu
+
+        const routes = mapMenuToRouters(userMenu)
+        routes.forEach((item) =>
+          router.addRoute('main', item)
+        )
+      }
     },
   },
 })
