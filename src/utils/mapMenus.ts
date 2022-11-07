@@ -17,6 +17,7 @@ export function loadLoaclRouters() {
   return localRoutes
 }
 
+// 初次进入, 展示的页面
 export let firstUrl = ''
 
 export function mapMenuToRouters(userMenu: any[]) {
@@ -33,6 +34,14 @@ export function mapMenuToRouters(userMenu: any[]) {
         if (firstUrl == '') firstUrl = currentRouter.path
 
         routes.push(currentRouter)
+        if (
+          routes.find((item) => item.path == submenu.url)
+        ) {
+          routes.push({
+            path: menu.url,
+            redirect: currentRouter.path,
+          })
+        }
       }
     }
   }
@@ -46,9 +55,39 @@ export function mapPathToMenu(
 ) {
   for (const menu of userMenu) {
     for (const submenu of menu.children) {
-      if(submenu.url == path) return submenu
+      if (submenu.url == path) return submenu
     }
   }
 
   return undefined
+}
+
+// 处理面包屑数据
+type IBreadcrubsReturn = { name: string; path: string }[]
+type IBreadcrubsProps = (
+  path: string,
+  userMenus: any[]
+) => IBreadcrubsReturn
+
+export const mapPathToBreadcrumbs: IBreadcrubsProps = (
+  path,
+  userMenu
+) => {
+  const returnData: IBreadcrubsReturn = []
+  for (const menu of userMenu) {
+    for (const submenu of menu.children) {
+      if (submenu.url == path) {
+        returnData.push({
+          path: menu.url,
+          name: menu.name,
+        })
+        returnData.push({
+          path: submenu.url,
+          name: submenu.name,
+        })
+      }
+    }
+  }
+
+  return returnData
 }

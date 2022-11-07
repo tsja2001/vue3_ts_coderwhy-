@@ -12,7 +12,6 @@
           <main-header @foldEmit="foldHandler" />
         </el-header>
         <el-main>
-          aaa
           <router-view></router-view>
         </el-main>
       </el-container>

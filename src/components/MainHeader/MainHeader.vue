@@ -6,7 +6,7 @@
           :is="isFold ? 'Expand' : 'Fold'"
         ></component>
       </el-icon>
-      <div class="text">面包屑</div>
+      <header-crumb></header-crumb>
     </div>
     <div class="right">
       <div class="icons">
@@ -18,7 +18,6 @@
       </div>
       <div class="mine">
         <el-avatar class="avatar"> avat </el-avatar>
-        <!-- <div class="userName"></div> -->
         <el-dropdown>
           <span class="el-dropdown-link userName">
             tsja<el-icon class="el-icon--right"
@@ -50,6 +49,7 @@ import { ref } from 'vue'
 import { CircleClose, User } from '@element-plus/icons-vue'
 import { LOGIN_MENU, LOGIN_TOKEN, LOGIN_USERINFO } from '@/global/constants';
 import router from '@/router';
+import HeaderCrumb from '@/components/MainHeader/c-cpns/HeaderCrumb.vue'
 
 const emit = defineEmits(['foldEmit'])
 
