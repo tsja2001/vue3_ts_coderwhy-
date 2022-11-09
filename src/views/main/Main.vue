@@ -34,6 +34,7 @@ const foldHandler = (e: boolean) => {
 <style lang="less" scoped>
 .Main {
   height: 100%;
+  background-color: #f3f3f3;
   .container {
     height: 100%;
   }

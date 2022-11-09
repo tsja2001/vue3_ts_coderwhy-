@@ -6,6 +6,7 @@ import {router} from '@/router'
 import { pinia } from './store'
 import { registerIcons } from './global/registerIcons'
 import { useLoginStore } from './store/login/login'
+import 'default-passive-events'
 
 const app = createApp(App)
 app.use(pinia)

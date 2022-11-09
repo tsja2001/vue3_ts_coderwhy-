@@ -24,7 +24,5 @@ const userMenus = useLoginStore().userMenu
 const breadcrumb = computed(() => {
   return mapPathToBreadcrumbs(route.path, userMenus)
 })
-
-console.log('[ breadcrumb ] >', breadcrumb)
 </script>
 <style lang="less" scoped></style>
