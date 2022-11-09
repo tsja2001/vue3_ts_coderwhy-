@@ -29,7 +29,6 @@ const formValue = reactive({
 })
 
 const loginAction = () => {
-  console.log(toRaw(formValue))
 }
 
 const varifyCodeHandler = () => {

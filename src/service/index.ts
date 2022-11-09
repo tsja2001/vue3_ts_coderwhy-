@@ -25,8 +25,6 @@ const hyRequest = new HYRequest({
           type: 'error',
         })
       }
-      console.log('[ res ] >', res)
-
       return res
     },
   },

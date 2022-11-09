@@ -42,7 +42,7 @@ router.beforeEach((to) => {
 
   if(to.fullPath == '/main' || to.fullPath == '/main/'){
     // console.log('[ 111 ] >', 111)
-    console.log('[ firstUrl ] >', firstUrl)
+    // console.log('[ firstUrl ] >', firstUrl)
     return firstUrl
   }
 })

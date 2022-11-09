@@ -1,5 +1,5 @@
-import { deleteUsersById, postUsersListData } from "@/service/main/system/system";
-import type { IUserListParamas } from "@/service/main/system/type";
+import { deleteUsersById, newUserData, postUsersListData } from "@/service/main/system/system";
+import type { IUserInfo, IUserListParamas } from "@/service/main/system/type";
 import { defineStore } from "pinia";
 import type { IState } from "./type";
 
@@ -17,6 +17,10 @@ export const useSystemStore = defineStore('system', {
 
     async deleteUserByIdAction(id: string){
       deleteUsersById(id)
+    },
+
+    async postNewUserData(userInfo: IUserInfo){
+      newUserData(userInfo)
     }
   }
 })

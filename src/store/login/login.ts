@@ -12,8 +12,8 @@ import {
   LOGIN_TOKEN,
   LOGIN_USERINFO,
 } from '@/global/constants'
-import type { RouteRecordRaw } from 'vue-router'
 import { mapMenuToRouters } from '@/utils/mapMenus'
+import { useMainStore } from '../main/main'
 
 interface IState {
   token: string
@@ -46,8 +46,13 @@ export const useLoginStore = defineStore('login', {
       this.userMenu = userMenu.data
       localCache.setCache(LOGIN_MENU, userMenu.data)
 
+      // 加载基础数据
+
+
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
+
       // 路由动态添加
-      // console.log('[ userMenu ] >', userMenu)
       const routes = mapMenuToRouters(userMenu.data)
       routes.forEach((item) =>
         router.addRoute('main', item)
@@ -64,6 +69,12 @@ export const useLoginStore = defineStore('login', {
         this.token = token
         this.userInfo = userInfo
         this.userMenu = userMenu
+
+        // 刷新后请求新数据
+
+
+        const mainStore = useMainStore()
+        mainStore.fetchEntireDataAction()
 
         const routes = mapMenuToRouters(userMenu)
         routes.forEach((item) =>

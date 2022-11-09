@@ -1,5 +1,11 @@
 <template>
   <div class="content">
+    <div class="list-title">
+      <div class="left">用户列表</div>
+      <div class="right">
+        <el-button type="primary" @click="newUserHandler">新建用户</el-button>
+      </div>
+    </div>
     <el-table :data="userList" style="width: 100%">
       <el-table-column type="selection" />
       <el-table-column type="index" />
@@ -123,7 +129,16 @@ defineExpose({ fetchPageData })
 // 点击删除
 const deleteHandler = (id: string) => {
   systemStore.deleteUserByIdAction(id)
+
+  fetchPageData()
 }
+
+// 点击新建
+const newUserHandler = () => {
+  emit('newUserHandler')
+}
+
+const emit = defineEmits(['newUserHandler'])
 </script>
 
 <style lang="less" scoped>
@@ -133,6 +148,14 @@ const deleteHandler = (id: string) => {
   margin-top: 20px;
   padding: 20px;
   background-color: #fff;
+  .list-title{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+  }
   .pageination {
     width: 100;
     display: flex;
