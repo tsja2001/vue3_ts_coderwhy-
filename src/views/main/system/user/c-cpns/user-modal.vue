@@ -2,8 +2,8 @@
   <div class="userModal">
     <el-dialog
       v-model="dialogVisible"
-      title="芜湖"
-      width="30%"
+      :title="isNewRef ? '创建用户' : '编辑用户'"
+      width="600px"
     >
       <el-form
         ref="formRef"
@@ -23,7 +23,11 @@
             v-model="formList.realname"
           />
         </el-form-item>
-        <el-form-item label="密码" prop="password">
+        <el-form-item
+          label="密码"
+          prop="password"
+          v-if="isNewRef"
+        >
           <el-input
             placeholder="请输入密码"
             v-model="formList.password"
@@ -87,10 +91,9 @@ import { storeToRefs } from 'pinia'
 import { useSystemStore } from '@/store/main/system/syetem'
 import { ElMessage, type ElForm } from 'element-plus'
 
-// const dialogVisible = ref(false)
-const dialogVisible = ref(true)
+const dialogVisible = ref(false)
 
-const formList = reactive({
+const formList = reactive<any>({
   name: '',
   realname: '',
   password: '',
@@ -141,8 +144,25 @@ const mainStore = useMainStore()
 const { entireRoles, entireDepartments } =
   storeToRefs(mainStore)
 
-const setDialogVisible = (visible: boolean) => {
-  dialogVisible.value = visible
+const isNewRef = ref(false)
+let currentRowUserId: number
+
+const setDialogVisible = (
+  isNew: boolean,
+  rowFormData?: any
+) => {
+  dialogVisible.value = true
+
+  isNewRef.value = isNew
+
+  // 如果是编辑
+  if (!isNew) {
+    currentRowUserId = rowFormData.id
+
+    for (const key in formList) {
+      formList[key] = rowFormData[key]
+    }
+  }
 }
 
 defineExpose({ setDialogVisible })
@@ -154,9 +174,16 @@ const formRef = ref<InstanceType<typeof ElForm>>()
 const configHandler = () => {
   formRef.value?.validate((valid, fields) => {
     if (valid) {
-      // 记住密码
       dialogVisible.value = false
-      systemStore.postNewUserData(formList)
+
+      if(isNewRef.value){
+        // 新建操作
+        systemStore.postNewUserData(formList)
+      }else{
+        // 编辑操作
+        systemStore.editUserDataAction(currentRowUserId, formList)
+      }
+
 
       emit('newUserFinishHandler')
     } else {
@@ -166,8 +193,6 @@ const configHandler = () => {
       })
     }
   })
-
-
 }
 const emit = defineEmits(['newUserFinishHandler'])
 </script>

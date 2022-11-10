@@ -15,8 +15,16 @@ export function deleteUsersById(id: string) {
 }
 
 export function newUserData(userInfo: IUserInfo){
+  console.log('[ formList ] >', userInfo)
   return hyRequest.post({
     url: '/users',
+    data: userInfo
+  })
+}
+
+export function editUserData(id: number, userInfo: IUserInfo){
+  return hyRequest.patch({
+    url: '/users/' + id,
     data: userInfo
   })
 }

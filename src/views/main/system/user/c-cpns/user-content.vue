@@ -64,6 +64,7 @@
             type="primary"
             size="small"
             icon="edit"
+            @click="editHandler(scope.row)"
             >编辑
           </el-button>
           <el-button
@@ -133,12 +134,17 @@ const deleteHandler = (id: string) => {
   fetchPageData()
 }
 
+// 点击编辑, 传入user父组件, 父组件调用userModal组件
+const editHandler = (data: any) => {
+  emit('editUserHandler', data)
+}
+
 // 点击新建
 const newUserHandler = () => {
   emit('newUserHandler')
 }
 
-const emit = defineEmits(['newUserHandler'])
+const emit = defineEmits(['newUserHandler', 'editUserHandler'])
 </script>
 
 <style lang="less" scoped>

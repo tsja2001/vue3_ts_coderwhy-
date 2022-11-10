@@ -7,10 +7,10 @@
     <UserContent
       ref="userContentRef"
       @newUserHandler="newUserHandler"
+      @editUserHandler="editUserHandler"
     ></UserContent>
     <UserModal
       ref="userModalRef"
-      @newUserFinishHandler="newUserFinishHandler"
     />
   </div>
 </template>
@@ -30,15 +30,14 @@ const searchResetHandler = () => {
 const searchHandler = (query: any) => {
   userContentRef.value?.fetchPageData(query)
 }
-const newUserFinishHandler = () => {
-  console.log('[ --------- ] >', '---------)')
-  userContentRef.value?.fetchPageData()
-}
 
 const userModalRef = ref<InstanceType<typeof UserModal>>()
 
 const newUserHandler = () => {
   userModalRef.value?.setDialogVisible(true)
+}
+const editUserHandler = (data: any) => {
+  userModalRef.value?.setDialogVisible(false, data)
 }
 </script>
 
