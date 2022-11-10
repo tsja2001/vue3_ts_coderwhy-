@@ -9,5 +9,5 @@ export function UTCToStr(
   utcStr: string,
   format = 'YYYY/MM/DD HH:mm:ss'
 ) {
-  return dayjs.utc(utcStr).utcOffset(-8).format(format)
+  return dayjs.utc(utcStr).utcOffset(8).format(format)
 }

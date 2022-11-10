@@ -13,4 +13,5 @@ interface IUserList {
 export type IState = {
   totalCount: number,
   userList: IUserList[]
+  list: IUserList[]
 }

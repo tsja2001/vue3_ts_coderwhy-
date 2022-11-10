@@ -1,45 +1,102 @@
-import { deleteUsersById, editUserData, newUserData, postUsersListData } from "@/service/main/system/system";
-import type { IUserInfo, IUserListParamas } from "@/service/main/system/type";
-import { defineStore } from "pinia";
-import type { IState } from "./type";
+import {
+  deleteUsersById,
+  editUserData,
+  newUserData,
+  postDataListData,
+  postUsersListData,
+  deleteDataById,
+  newPageData,
+  editPageData,
+} from '@/service/main/system/system'
+import type {
+  IUserInfo,
+  IUserListParamas,
+} from '@/service/main/system/type'
+import { defineStore } from 'pinia'
+import type { IState } from './type'
 
 export const useSystemStore = defineStore('system', {
   state: (): IState => ({
     userList: [],
-    totalCount: 0
+    totalCount: 0,
+    list: [],
   }),
   actions: {
-    async postUserListAction(data: IUserListParamas){
-       const res = await postUsersListData(data)
-       this.userList = res.data.list
-       this.totalCount = res.data.totalCount
+    // 查询
+    async postUserListAction(data: IUserListParamas) {
+      const res = await postUsersListData(data)
+      this.userList = res.data.list
+      this.totalCount = res.data.totalCount
     },
 
-    async deleteUserByIdAction(id: string){
+    async postDataListAction(pageName: string, data: any) {
+      const res = await postDataListData(pageName, data)
+      this.list = res.data.list
+      this.totalCount = res.data.totalCount
+    },
+
+    // 删除
+    async deleteUserByIdAction(id: string) {
       deleteUsersById(id)
+
+      this.postUserListAction({
+        offset: 0,
+        size: 10,
+      })
     },
 
-    async postNewUserData(userInfo: IUserInfo){
-        console.log('[ userInfo ] >', userInfo)
+    async deleteDataByIdAction(
+      pageName: string,
+      id: string
+    ) {
+      await deleteDataById(pageName, id)
 
+      this.postDataListAction(pageName, {
+        offset: 0,
+        size: 10,
+      })
+    },
+
+    // 增加
+    async postNewUserData(userInfo: IUserInfo) {
       newUserData(userInfo)
 
       this.postUserListAction({
         offset: 0,
-        size: 10
+        size: 10,
       })
     },
 
-    async editUserDataAction(id: number, data: IUserInfo){
+    async postNewDataAction(pageName: string, data: any) {
+      await newPageData(pageName, data)
+
+      this.postDataListAction(pageName, {
+        offset: 0,
+        size: 10,
+      })
+    },
+
+    // 编辑
+    async editUserDataAction(id: number, data: IUserInfo) {
       editUserData(id, data)
-      // editUserData(id, {
-      //  "cellphone": "15566668800"
-      // })
 
       this.postUserListAction({
         offset: 0,
-        size: 10
+        size: 10,
       })
-    }
-  }
+    },
+
+    async editDataAction(
+      pageName: string,
+      id: number,
+      data: IUserInfo
+    ) {
+      await editPageData(pageName, id, data)
+
+      this.postDataListAction(pageName, {
+        offset: 0,
+        size: 10,
+      })
+    },
+  },
 })
