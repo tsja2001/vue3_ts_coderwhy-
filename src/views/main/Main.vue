@@ -45,6 +45,7 @@ const foldHandler = (e: boolean) => {
 .aside {
   border-right: 1px solid #f0f0f0;
   transition: width .2s;
+  scrollbar-width: none;
 }
 .text{
   color: #f00;

@@ -4,7 +4,7 @@ export const formItems = [
     label: '部门名称',
     placehoder: '请输入部门名称',
     prop: 'name',
-    default: 'aaaaa'
+    default: ''
   },
   {
     type: 'input',

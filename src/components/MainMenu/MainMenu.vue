@@ -40,11 +40,11 @@
 </template>
 
 <script setup lang="ts">
-import router from '@/router';
+import router from '@/router'
 import { useLoginStore } from '@/store/login/login'
-import { mapPathToMenu } from '@/utils/mapMenus';
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { mapPathToMenu } from '@/utils/mapMenus'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 const props = defineProps(['isFold'])
 
@@ -58,7 +58,7 @@ const menuItemHandler = (e: any) => {
 const route = useRoute()
 const submenu = mapPathToMenu(route.path, menu)
 
-const currentId = ref( submenu.id)
+const currentId = ref(submenu.id)
 </script>
 <style lang="less" scoped>
 .MainMenu {
@@ -74,6 +74,7 @@ const currentId = ref( submenu.id)
     height: 50px;
     padding: 0 20px;
     box-sizing: border-box;
+
     .text {
       font-weight: 800;
       font-size: 18px !important;

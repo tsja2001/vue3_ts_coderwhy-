@@ -69,8 +69,6 @@ props.formItems.forEach(
   (item) => (searchForm[item.prop] = item.default ?? '')
 )
 
-console.log('[ searchForm ] >', searchForm)
-
 const formRef = ref<InstanceType<typeof ElForm>>()
 
 const emit = defineEmits(['resetHandler', 'searchHandler'])

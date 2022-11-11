@@ -22,7 +22,7 @@
             v-model="formList.leader"
           />
         </el-form-item>
-        <el-form-item label="部门" prop="departmentId">
+        <el-form-item label="部门" prop="parentId">
           <el-select
             placeholder="请选择上级部门"
             v-model="formList.parentId"
