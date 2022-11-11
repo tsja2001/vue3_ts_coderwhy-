@@ -23,7 +23,7 @@
 import pageSearch from '@/components/PageSearch/page-search.vue'
 import pageContent from '@/components/PageContent/page-content.vue'
 import pageModal from '@/components/PageModal/page-modal.vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { formItems } from './search.config'
 import { contentConfig } from './content.config'
 import { modalConfig } from './modal.config'
@@ -32,29 +32,8 @@ import { useMainStore } from '@/store/main/main'
 import { usePageContent } from '@/hook/usePageContent'
 import { usePageModal } from '@/hook/usePageModal'
 
-// const pageContentRef =
-//   ref<InstanceType<typeof pageContent>>()
-
-// const searchHandler = (query: any) => {
-//   pageContentRef.value?.fetchPageData(query)
-// }
-// const resetHandler = (query: any) => {
-//   pageContentRef.value?.fetchPageData(query)
-// }
-// 使用hook代替上面代码
 const { pageContentRef, searchHandler, resetHandler } =
   usePageContent()
-
-// const pageModalRef = ref<InstanceType<typeof pageModal>>()
-
-// const newDataHandler = () => {
-//   pageModalRef.value?.setDialogVisible(true)
-// }
-
-// const editUserHandler = (data: any) => {
-//   pageModalRef.value?.setDialogVisible(false, data)
-// }
-// 使用hook代替上面代码
 const { pageModalRef, newDataHandler, editUserHandler } =
   usePageModal()
 
