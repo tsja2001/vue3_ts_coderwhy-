@@ -46,6 +46,8 @@ declare module '@vue/runtime-core' {
     HeaderCrumb: typeof import('./src/components/MainHeader/c-cpns/HeaderCrumb.vue')['default']
     MainHeader: typeof import('./src/components/MainHeader/MainHeader.vue')['default']
     MainMenu: typeof import('./src/components/MainMenu/MainMenu.vue')['default']
+    PageContent: typeof import('./src/components/PageContent/page-content.vue')['default']
+    PageModal: typeof import('./src/components/PageModal/page-modal.vue')['default']
     PageSearch: typeof import('./src/components/PageSearch/page-search.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

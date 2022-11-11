@@ -4,12 +4,17 @@
     <pageSearch
       @searchHandler="searchHandler"
       :formItems="formItems"
-      />
+    />
     <pageContent
+      :contentConfig="contentConfig"
       ref="pageContentRef"
       @newDataHandler="newDataHandler"
       @editUserHandler="editUserHandler"
-    />
+    >
+      <template #btn="scope">
+        呀哈哈哈
+      </template>
+    </pageContent>
     <pageModal ref="pageModalRef" />
   </div>
 </template>
@@ -17,10 +22,12 @@
 <script setup lang="ts" name="department">
 // import pageSearch from './c-cpns/page-search.vue'
 import pageSearch from '@/components/PageSearch/page-search.vue'
-import pageContent from './c-cpns/page-content.vue'
+// import pageContent from './c-cpns/page-content.vue'
+import pageContent from '@/components/PageContent/page-content.vue'
 import pageModal from './c-cpns/page-modal.vue'
 import { ref } from 'vue'
 import { formItems } from './search.config'
+import { contentConfig } from './content.config'
 
 const pageContentRef =
   ref<InstanceType<typeof pageContent>>()

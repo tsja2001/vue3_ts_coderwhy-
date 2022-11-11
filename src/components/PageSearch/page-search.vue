@@ -51,13 +51,14 @@ import type { ElForm } from 'element-plus'
 import { reactive, ref } from 'vue'
 
 interface IProp {
-  formItems: {
-    type: 'input' | 'date-picker'
-    prop: string
-    label: string
-    placeholder?: string
-    default?: any
-  }[]
+  // formItems: {
+  //   type: 'input' | 'date-picker'
+  //   prop: string
+  //   label: string
+  //   placeholder?: string
+  //   default?: any
+  // }[]
+  formItems: any[]
 }
 
 const props = defineProps<IProp>()
