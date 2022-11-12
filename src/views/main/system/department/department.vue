@@ -9,7 +9,7 @@
       :contentConfig="contentConfig"
       ref="pageContentRef"
       @newDataHandler="newDataHandler"
-      @editUserHandler="editUserHandler"
+      @editHandler="editHandler"
     >
     </pageContent>
     <pageModal
@@ -34,7 +34,7 @@ import { usePageModal } from '@/hook/usePageModal'
 
 const { pageContentRef, searchHandler, resetHandler } =
   usePageContent()
-const { pageModalRef, newDataHandler, editUserHandler } =
+const { pageModalRef, newDataHandler, editHandler } =
   usePageModal()
 
 const modalConfigComputed = computed<IModalConfig>(() => {

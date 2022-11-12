@@ -2,7 +2,7 @@
   <div class="userModal">
     <el-dialog
       v-model="dialogVisible"
-      :title="isNewRef ? '创建用户' : '编辑用户'"
+      :title="isNewRef ? modalConfig.headers.new : modalConfig.headers.edit"
       width="600px"
     >
       <el-form
@@ -46,35 +46,14 @@
                 :value="optionItem.value"
               ></el-option>
             </el-select>
+
+            <!-- 作为插槽传入 -->
+            <template #default v-if="item.type === 'custom'">
+              <slot :name="item.slotName"></slot>
+            </template>
           </el-form-item>
         </template>
 
-        <!-- <el-form-item label="部门名称" prop="name">
-          <el-input
-            placeholder="请输入部门名称"
-            v-model="formList.name"
-          />
-        </el-form-item>
-        <el-form-item label="领导" prop="leader">
-          <el-input
-            placeholder="请输入领导"
-            v-model="formList.leader"
-          />
-        </el-form-item>
-        <el-form-item label="部门" prop="departmentId">
-          <el-select
-            placeholder="请选择上级部门"
-            v-model="formList.parentId"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in entireDepartments"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item> -->
       </el-form>
 
       <template #footer>
@@ -92,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, toRaw } from 'vue'
 import { useMainStore } from '@/store/main/main'
 import { storeToRefs } from 'pinia'
 import { useSystemStore } from '@/store/main/system/syetem'
@@ -106,15 +85,16 @@ export interface IModalConfig {
 }
 
 export interface IModalConfigProp {
-  modalConfig: IModalConfig
+  modalConfig: IModalConfig,
+  // 当组件的插槽想要传入数据给此组件时, 可以使用此参数. 示例: src/views/main/system/role/role.vue
+  otherInfo?: any
 }
-
 
 const props = defineProps<IModalConfigProp>()
 
 const dialogVisible = ref(false)
 
-const formList = reactive<any>({})
+let formList = reactive<any>({})
 
 props.modalConfig.formItems.forEach((item) => {
   formList[item.prop] = item.default ?? ''
@@ -149,6 +129,7 @@ const systemStore = useSystemStore()
 const formRef = ref<InstanceType<typeof ElForm>>()
 
 const configHandler = () => {
+
   formRef.value?.validate((valid, fields) => {
     if (valid) {
       dialogVisible.value = false
@@ -157,14 +138,20 @@ const configHandler = () => {
         // 新建操作
         systemStore.postNewDataAction(
           props.modalConfig.pageName,
-          formList
+          {
+            ...formList,
+            ...props.otherInfo
+          }
         )
       } else {
         // 编辑操作
         systemStore.editDataAction(
           props.modalConfig.pageName,
           currentRowId,
-          formList
+          {
+            ...formList,
+            ...props.otherInfo
+          }
         )
       }
 

@@ -7,7 +7,7 @@
     <UserContent
       ref="userContentRef"
       @newUserHandler="newUserHandler"
-      @editUserHandler="editUserHandler"
+      @editHandler="editHandler"
     ></UserContent>
     <UserModal
       ref="userModalRef"
@@ -36,7 +36,7 @@ const userModalRef = ref<InstanceType<typeof UserModal>>()
 const newUserHandler = () => {
   userModalRef.value?.setDialogVisible(true)
 }
-const editUserHandler = (data: any) => {
+const editHandler = (data: any) => {
   userModalRef.value?.setDialogVisible(false, data)
 }
 </script>

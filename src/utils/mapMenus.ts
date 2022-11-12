@@ -1,4 +1,5 @@
 import router from '@/router'
+import { toRaw } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 export function loadLoaclRouters() {
@@ -90,4 +91,23 @@ export const mapPathToBreadcrumbs: IBreadcrubsProps = (
   }
 
   return returnData
+}
+
+// 根据返回的菜单list, 拿到菜单id
+export const mapMenuListToMenuId= (menuList: any[]) => {
+  const idList:number[] = []
+
+  const mapFn = (childList: any[]) => {
+    childList.forEach(item => {
+      if(item.children && item.children.length){
+        mapFn(item.children)
+      }else{
+        idList.push(item.id)
+      }
+    })
+  }
+
+  mapFn(menuList)
+
+  return idList
 }

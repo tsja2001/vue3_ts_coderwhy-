@@ -136,7 +136,7 @@ const deleteHandler = (id: string) => {
 
 // 点击编辑, 传入user父组件, 父组件调用userModal组件
 const editHandler = (data: any) => {
-  emit('editUserHandler', data)
+  emit('editHandler', data)
 }
 
 // 点击新建
@@ -144,7 +144,7 @@ const newUserHandler = () => {
   emit('newUserHandler')
 }
 
-const emit = defineEmits(['newUserHandler', 'editUserHandler'])
+const emit = defineEmits(['newUserHandler', 'editHandler'])
 </script>
 
 <style lang="less" scoped>

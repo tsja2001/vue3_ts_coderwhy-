@@ -1,15 +1,15 @@
 import type { IModalConfig, IModalConfigProp } from "@/components/PageModal/type";
 
 export const modalConfig:IModalConfig = {
-  pageName: 'department',
+  pageName: 'menu',
   headers: {
-    new: '新建部门',
-    edit: '编辑部门',
+    new: '新建菜单',
+    edit: '编辑菜单',
   },
   formItems: [
     {
       type: 'input',
-      label: '部门名称',
+      label: '菜单名称',
       placehoder: '请输入部门名称',
       prop: 'name',
       default: 'aaaaa',

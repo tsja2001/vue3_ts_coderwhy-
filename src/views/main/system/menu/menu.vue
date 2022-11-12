@@ -9,12 +9,12 @@
       :contentConfig="contentConfig"
       ref="pageContentRef"
       @newDataHandler="newDataHandler"
-      @editUserHandler="editUserHandler"
+      @editHandler="editHandler"
     >
     </pageContent>
     <pageModal
       ref="pageModalRef"
-      :modalConfig="modalConfigComputed"
+      :modalConfig="modalConfig"
     />
   </div>
 </template>
@@ -34,26 +34,8 @@ import { usePageModal } from '@/hook/usePageModal'
 
 const { pageContentRef, searchHandler, resetHandler } =
   usePageContent()
-const { pageModalRef, newDataHandler, editUserHandler } =
+const { pageModalRef, newDataHandler, editHandler } =
   usePageModal()
-
-const modalConfigComputed = computed<IModalConfig>(() => {
-  const mainStore = useMainStore()
-  const departments = mainStore.entireDepartments.map(
-    (item) => ({
-      label: item.name,
-      value: item.id,
-    })
-  )
-
-  modalConfig.formItems.forEach((item: any) => {
-    if (item.prop === 'parentId') {
-      item.options = departments
-    }
-  })
-
-  return modalConfig
-})
 </script>
 
 <style scoped></style>
