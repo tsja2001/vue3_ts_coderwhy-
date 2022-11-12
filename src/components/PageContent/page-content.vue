@@ -12,7 +12,7 @@
         }}</el-button>
       </div>
     </div>
-    <el-table :data="list" style="width: 100%">
+    <el-table :data="list" style="width: 100%" v-bind="props.contentConfig.childrenTree">
       <template
         v-for="item in props.contentConfig.contentList"
         key="prop"
@@ -114,7 +114,8 @@ interface IProps {
       title?: string
       btnTitle?: string
     }
-    contentList: any[]
+    contentList: any[],
+    childrenTree?: any
   }
 }
 
