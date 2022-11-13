@@ -12,13 +12,14 @@ import {
   LOGIN_TOKEN,
   LOGIN_USERINFO,
 } from '@/global/constants'
-import { mapMenuToRouters } from '@/utils/mapMenus'
+import { mapMenuToPermission, mapMenuToRouters } from '@/utils/mapMenus'
 import { useMainStore } from '../main/main'
 
 interface IState {
   token: string
   userInfo: any
-  userMenu: any[]
+  userMenu: any[],
+  permissionList: string[]
 }
 
 export const useLoginStore = defineStore('login', {
@@ -26,6 +27,7 @@ export const useLoginStore = defineStore('login', {
     token: '',
     userInfo: {},
     userMenu: [],
+    permissionList: []
   }),
   actions: {
     async login(data: IAccount) {
@@ -47,8 +49,6 @@ export const useLoginStore = defineStore('login', {
       localCache.setCache(LOGIN_MENU, userMenu.data)
 
       // 加载基础数据
-
-
       const mainStore = useMainStore()
       mainStore.fetchEntireDataAction()
 
@@ -57,6 +57,10 @@ export const useLoginStore = defineStore('login', {
       routes.forEach((item) =>
         router.addRoute('main', item)
       )
+
+      // 获取按钮权限
+      const permissionList = mapMenuToPermission(userMenu.data)
+      this.permissionList = permissionList
 
       router.push('/main')
     },
@@ -71,8 +75,6 @@ export const useLoginStore = defineStore('login', {
         this.userMenu = userMenu
 
         // 刷新后请求新数据
-
-
         const mainStore = useMainStore()
         mainStore.fetchEntireDataAction()
 
@@ -80,6 +82,9 @@ export const useLoginStore = defineStore('login', {
         routes.forEach((item) =>
           router.addRoute('main', item)
         )
+
+        const permissionList = mapMenuToPermission(userMenu)
+        this.permissionList = permissionList
       }
     },
   },

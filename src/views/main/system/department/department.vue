@@ -3,7 +3,7 @@
     <pageSearch
       @searchHandler="searchHandler"
       @resetHandler="resetHandler"
-      :formItems="formItems"
+      :searchConfig="searchConfig"
     />
     <pageContent
       :contentConfig="contentConfig"
@@ -24,7 +24,7 @@ import pageSearch from '@/components/PageSearch/page-search.vue'
 import pageContent from '@/components/PageContent/page-content.vue'
 import pageModal from '@/components/PageModal/page-modal.vue'
 import { computed } from 'vue'
-import { formItems } from './search.config'
+import { searchConfig } from './search.config'
 import { contentConfig } from './content.config'
 import { modalConfig } from './modal.config'
 import type { IModalConfig } from '@/components/PageModal/type'

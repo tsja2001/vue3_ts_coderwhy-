@@ -13,6 +13,7 @@ import type {
   IUserListParamas,
 } from '@/service/main/system/type'
 import { defineStore } from 'pinia'
+import { useMainStore } from '../main'
 import type { IState } from './type'
 
 export const useSystemStore = defineStore('system', {
@@ -43,7 +44,14 @@ export const useSystemStore = defineStore('system', {
         offset: 0,
         size: 10,
       })
+
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
     },
+
+
+
+
 
     async deleteDataByIdAction(
       pageName: string,
@@ -55,6 +63,9 @@ export const useSystemStore = defineStore('system', {
         offset: 0,
         size: 10,
       })
+
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
     },
 
     // 增加
@@ -74,6 +85,9 @@ export const useSystemStore = defineStore('system', {
         offset: 0,
         size: 10,
       })
+
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
     },
 
     // 编辑
@@ -97,6 +111,9 @@ export const useSystemStore = defineStore('system', {
         offset: 0,
         size: 10,
       })
+
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
     },
   },
 })

@@ -94,14 +94,14 @@ export const mapPathToBreadcrumbs: IBreadcrubsProps = (
 }
 
 // 根据返回的菜单list, 拿到菜单id
-export const mapMenuListToMenuId= (menuList: any[]) => {
-  const idList:number[] = []
+export const mapMenuListToMenuId = (menuList: any[]) => {
+  const idList: number[] = []
 
   const mapFn = (childList: any[]) => {
-    childList.forEach(item => {
-      if(item.children && item.children.length){
+    childList.forEach((item) => {
+      if (item.children && item.children.length) {
         mapFn(item.children)
-      }else{
+      } else {
         idList.push(item.id)
       }
     })
@@ -110,4 +110,23 @@ export const mapMenuListToMenuId= (menuList: any[]) => {
   mapFn(menuList)
 
   return idList
+}
+
+// 根据用户菜单获取按钮权限
+export const mapMenuToPermission = (menus: any[]) => {
+  const permissionList: string[] = []
+
+  const menusMap = (menu: any[]) => {
+    menu.forEach((item) => {
+      if (item.children) {
+        menusMap(item.children)
+      } else if(item.type === 3){
+        permissionList.push(item.permission)
+      }
+    })
+  }
+
+  menusMap(menus)
+
+  return permissionList
 }

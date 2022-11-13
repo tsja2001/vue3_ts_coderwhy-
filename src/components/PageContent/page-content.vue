@@ -7,12 +7,22 @@
         }}
       </div>
       <div class="right">
-        <el-button type="primary" @click="newDataHandler">{{
-          props.contentConfig?.header.btnTitle ?? '新建数据'
-        }}</el-button>
+        <el-button
+          type="primary"
+          @click="newDataHandler"
+          v-if="isCreate"
+          >{{
+            props.contentConfig?.header.btnTitle ??
+            '新建数据'
+          }}</el-button
+        >
       </div>
     </div>
-    <el-table :data="list" style="width: 100%" v-bind="props.contentConfig.childrenTree">
+    <el-table
+      :data="list"
+      style="width: 100%"
+      v-bind="props.contentConfig.childrenTree"
+    >
       <template
         v-for="item in props.contentConfig.contentList"
         key="prop"
@@ -51,6 +61,7 @@
                 size="small"
                 icon="edit"
                 @click="editHandler(scope.row)"
+                v-if="isEdit"
                 >编辑
               </el-button>
               <el-button
@@ -59,6 +70,7 @@
                 size="small"
                 icon="delete"
                 @click="deleteHandler(scope.row.id)"
+                v-if="isDelete"
                 >删除
               </el-button>
             </template>
@@ -90,7 +102,7 @@
       <el-pagination
         v-model:currentPage="currentPage"
         v-model:page-size="pageSize"
-        :page-sizes="[5, 10, 20, 30]"
+        :page-sizes="[10, 20, 30]"
         small="small"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalCount"
@@ -106,6 +118,7 @@ import { useSystemStore } from '@/store/main/system/syetem'
 import { storeToRefs } from 'pinia'
 import { UTCToStr } from '@/utils/format'
 import { ref } from 'vue'
+import { usePermission } from '@/utils/usePermission'
 
 interface IProps {
   contentConfig: {
@@ -114,27 +127,56 @@ interface IProps {
       title?: string
       btnTitle?: string
     }
-    contentList: any[],
+    contentList: any[]
     childrenTree?: any
   }
 }
 
 const props = defineProps<IProps>()
 
+const isQuery = usePermission(
+  `${props.contentConfig.pageName}:query`
+)
+const isEdit = usePermission(
+  `${props.contentConfig.pageName}:update`
+)
+const isDelete = usePermission(
+  `${props.contentConfig.pageName}:delete`
+)
+const isCreate = usePermission(
+  `${props.contentConfig.pageName}:create`
+)
+
 const systemStore = useSystemStore()
 const { list, totalCount } = storeToRefs(systemStore)
 
 const currentPage = ref(1)
 const pageSize = ref(10)
+// const pageSize = ref(5)
 
 // 发送分页请求
 const fetchPageData = (query: any = {}) => {
-  systemStore.postDataListAction(props.contentConfig.pageName, {
-    offset: (currentPage.value - 1) * pageSize.value,
-    size: pageSize.value,
-    ...query,
-  })
+  if (isQuery === false) return
+
+  systemStore.postDataListAction(
+    props.contentConfig.pageName,
+    {
+      offset: (currentPage.value - 1) * pageSize.value,
+      size: pageSize.value,
+      ...query,
+    }
+  )
 }
+
+// 监听新建, 新建完成之后将page设为1
+systemStore.$onAction(({ name, after }) => {
+  after(() => {
+    if (name === 'postNewDataAction') {
+      currentPage.value = 1
+    }
+  })
+})
+
 // 进入页面, 加载list数据
 fetchPageData()
 
@@ -149,7 +191,10 @@ defineExpose({ fetchPageData })
 
 // 点击删除
 const deleteHandler = (id: string) => {
-  systemStore.deleteDataByIdAction(props.contentConfig.pageName, id)
+  systemStore.deleteDataByIdAction(
+    props.contentConfig.pageName,
+    id
+  )
 }
 
 // 点击编辑, 传入user父组件, 父组件调用userModal组件
@@ -162,10 +207,7 @@ const newDataHandler = () => {
   emit('newDataHandler')
 }
 
-const emit = defineEmits([
-  'newDataHandler',
-  'editHandler',
-])
+const emit = defineEmits(['newDataHandler', 'editHandler'])
 </script>
 
 <style lang="less" scoped>

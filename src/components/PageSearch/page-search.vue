@@ -1,12 +1,15 @@
 <template>
-  <div class="user-search">
+  <div class="user-search" v-if="isQuery">
     <el-form
       label-width="90px"
       :model="searchForm"
       ref="formRef"
     >
       <el-row :gutter="0">
-        <template v-for="item in formItems" key="id">
+        <template
+          v-for="item in searchConfig.formItems"
+          key="id"
+        >
           <el-form-item
             :prop="item.prop"
             :label="item.label"
@@ -49,23 +52,24 @@
 <script setup lang="ts">
 import type { ElForm } from 'element-plus'
 import { reactive, ref } from 'vue'
+import { usePermission } from '@/utils/usePermission'
 
 interface IProp {
-  // formItems: {
-  //   type: 'input' | 'date-picker'
-  //   prop: string
-  //   label: string
-  //   placeholder?: string
-  //   default?: any
-  // }[]
-  formItems: any[]
+  searchConfig: {
+    formItems: any[],
+    pageName: string
+  }
 }
 
 const props = defineProps<IProp>()
 
+const isQuery = usePermission(
+  `${props.searchConfig.pageName}:query`
+)
+
 const searchForm = reactive<any>({})
 
-props.formItems.forEach(
+props.searchConfig.formItems.forEach(
   (item) => (searchForm[item.prop] = item.default ?? '')
 )
 
